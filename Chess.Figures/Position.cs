@@ -1,4 +1,4 @@
-﻿namespace Chess.Engine
+﻿namespace Chess.Figures
 {
     /// <summary>
     /// A Position in the grid
@@ -9,12 +9,12 @@
         /// X axis (Coloumn)
         /// </summary>
         
-        private int X { get; set; }
+        public int X { get; set; }
 
         /// <summary>
         /// Y axis (Row)
         /// </summary>
-        private int Y { get; set; }
+        public int Y { get; set; }
 
         public Position(int X, int Y)
         {

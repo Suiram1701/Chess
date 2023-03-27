@@ -3,11 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Figure="clr-namespace:Chess.Figures;assembly=Chess.Figures"
         xmlns:local="clr-namespace:Chess.App"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         ResizeMode="NoResize"
-        Height="920" Width="960"
+        Height="920" Width="1120"
         Title="Schach" WindowStartupLocation="CenterScreen">
     <Canvas x:Name="Canvas">
         <Label Content="     A            B            C           D            E            F            G            H" Canvas.Left="40" Canvas.Top="4" HorizontalAlignment="Center" Height="40" VerticalAlignment="Top" Width="800" FontSize="26"/>
@@ -20,16 +21,6 @@
         <Label Content="7" FontSize="26" Canvas.Left="16" Canvas.Top="671" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Label Content="8" FontSize="26" Canvas.Left="16" Canvas.Top="771" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Grid x:Name="Grid" Height="800" Width="800" Canvas.Left="40" Canvas.Top="44">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="100"/>
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
@@ -40,6 +31,16 @@
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
             <!--#region Chess table-->
             <Rectangle Tag="00" Height="100" Width="100" Fill="#e5d7c5" Grid.Row="0" Grid.Column="0" Panel.ZIndex="0"/>
             <Rectangle Tag="01" Height="100" Width="100" Fill="#b66241" Grid.Row="0" Grid.Column="1" Panel.ZIndex="0"/>

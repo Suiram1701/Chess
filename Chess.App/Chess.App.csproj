@@ -103,10 +103,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chess.Engine\Chess.Engine.csproj">
-      <Project>{16877632-3161-4b06-9f1d-d3d1e87b1036}</Project>
-      <Name>Chess.Engine</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chess.Figures\Chess.Figures.csproj">
       <Project>{8cd5f268-faa6-40dd-a3c6-0a2198cde1df}</Project>
       <Name>Chess.Figures</Name>
