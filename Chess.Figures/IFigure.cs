@@ -1,4 +1,6 @@
-﻿namespace Chess.Figures
+﻿using System.Windows;
+
+namespace Chess.Figures
 {
     public enum Color
     {
@@ -16,6 +18,6 @@
         /// <summary>
         /// The current position in the grid
         /// </summary>
-        Position Position { get; set; }
+        Point Position { get; set; }
     }
 }

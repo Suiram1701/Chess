@@ -48,6 +48,7 @@
       <DependentUpon>Bishop.xaml</DependentUpon>
     </Compile>
     <Compile Include="Convert\DataToImageConvert.cs" />
+    <Compile Include="Convert\MultiplyConvert.cs" />
     <Compile Include="Farmer.xaml.cs">
       <DependentUpon>Farmer.xaml</DependentUpon>
     </Compile>
@@ -63,7 +64,6 @@
     <Compile Include="King.xaml.cs">
       <DependentUpon>King.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queen.xaml.cs">
       <DependentUpon>Queen.xaml</DependentUpon>

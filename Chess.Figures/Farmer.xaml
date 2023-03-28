@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:Chess.Figures"
              DataContext="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}"
              mc:Ignorable="d" 
-             Height="100" Width="100" Grid.Column="{Binding Position.X, Mode=OneWay}" Grid.Row="{Binding Position.Y, Mode=OneWay}">
+             Height="100" Width="100" Canvas.Left="{Binding Position.X, Mode=OneWay}" Canvas.Top="{Binding Position.Y, Mode=OneWay}">
     <UserControl.Resources>
         <Convert:DataToImageConvert x:Key="DataToImage"/>
     </UserControl.Resources>

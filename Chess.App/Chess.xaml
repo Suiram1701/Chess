@@ -10,7 +10,7 @@
         ResizeMode="NoResize"
         Height="920" Width="1120"
         Title="Schach" WindowStartupLocation="CenterScreen">
-    <Canvas x:Name="Canvas">
+    <Canvas>
         <Label Content="     A            B            C           D            E            F            G            H" Canvas.Left="40" Canvas.Top="4" HorizontalAlignment="Center" Height="40" VerticalAlignment="Top" Width="800" FontSize="26"/>
         <Label Content="1" FontSize="26" Canvas.Left="16" Canvas.Top="71" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Label Content="2" FontSize="26" Canvas.Left="16" Canvas.Top="171" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -107,6 +107,9 @@
             <Rectangle Tag="76" Height="100" Width="100" Fill="#b66241" Grid.Row="7" Grid.Column="6" Panel.ZIndex="0"/>
             <Rectangle Tag="77" Height="100" Width="100" Fill="#e5d7c5" Grid.Row="7" Grid.Column="7" Panel.ZIndex="0"/>
             <!--#endregion-->
+            <Canvas x:Name="Canvas" Grid.ColumnSpan="8" Grid.RowSpan="8">
+                
+            </Canvas>
         </Grid>
         <Label Content="     A            B            C           D            E            F            G            H" Canvas.Left="40" Canvas.Top="837" Height="40" Width="800" FontSize="26" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label Content="1" FontSize="26" Canvas.Left="840" Canvas.Top="71" HorizontalAlignment="Center" VerticalAlignment="Top"/>

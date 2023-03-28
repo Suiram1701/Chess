@@ -16,10 +16,10 @@ namespace Chess.Figures
             set => SetValue(ColorProperty, value);
         }
 
-        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(Position), typeof(Tower), new PropertyMetadata(new Position(0, 0)));
-        public Position Position
+        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(Point), typeof(Tower), new PropertyMetadata(new Point(0, 0)));
+        public Point Position
         {
-            get => (Position)GetValue(PositionProperty);
+            get => (Point)GetValue(PositionProperty);
 
             set => SetValue(PositionProperty, value);
         }
