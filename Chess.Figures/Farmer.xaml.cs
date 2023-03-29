@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Chess.Figures
@@ -24,9 +26,35 @@ namespace Chess.Figures
             set => SetValue(PositionProperty, value);
         }
 
+        public Start Start { get; set; }
+
+        public bool OnStart { get; set; } = true;
+
         public Farmer()
         {
             InitializeComponent();
+        }
+
+        public IEnumerable<Point> GetMovement(IEnumerable<(Point Position, bool isFriend)> OtherFigures)
+        {
+
+            // One forward
+            if (!OtherFigures.Any(Figure => Figure.Position.X == Position.X && Figure.Position.Y == Position.Y + (Start == Start.Up ? 1 : -1)))
+                yield return new Point(Position.X, Position.Y + (Start == Start.Up ? 1 : -1));
+
+            // First move
+            if (OnStart)
+                // No one on field
+                if (!OtherFigures.Any(Figure => Figure.Position.X == Position.X && Figure.Position.Y == Position.Y + (Start == Start.Up ? 2 : -2)))
+                    yield return new Point(Position.X, Position.Y + (Start == Start.Up ? 2 : -2));
+
+            // Enemy on left
+            if (OtherFigures.Any(Figure => Figure.Position.X == Position.X - 1 && Figure.Position.Y == Position.Y + (Start == Start.Up ? 1 : -1) && !Figure.isFriend))
+                yield return new Point(Position.X - 1, Position.Y + (Start == Start.Up ? 1 : -1));
+
+            // Enemy on right
+            if (OtherFigures.Any(Figure => Figure.Position.X == Position.X + 1 && Figure.Position.Y == Position.Y + (Start == Start.Up ? 1 : -1) && !Figure.isFriend))
+                yield return new Point(Position.X + 1, Position.Y + (Start == Start.Up ? 1 : -1));
         }
     }
 }

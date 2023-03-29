@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Chess.Figures
@@ -24,9 +25,18 @@ namespace Chess.Figures
             set => SetValue(PositionProperty, value);
         }
 
+        public Start Start { get; set; }
+
+        public bool OnStart { get; set; } = true;
+
         public Tower()
         {
             InitializeComponent();
+        }
+
+        public IEnumerable<Point> GetMovement(IEnumerable<(Point Position, bool isFriend)> OtherFigures)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

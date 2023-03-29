@@ -4,6 +4,10 @@ using System.Windows.Controls;
 using System.Collections.Generic;
 using System.Windows.Input;
 using System;
+using System.Linq;
+using System.Windows.Shapes;
+using System.Windows.Media;
+using Color = Chess.Figures.Color;
 
 namespace Chess.App
 {
@@ -23,6 +27,7 @@ namespace Chess.App
 
         #region Drag & drop
         private IFigure DragFigure { get; set; } = null;
+        private IEnumerable<Point> AllowedFields { get; set; } = null;
 
         /// <summary>
         /// Select the figure as current item
@@ -37,9 +42,8 @@ namespace Chess.App
                 DragFigure = (IFigure)sender;
                 ((UIElement)DragFigure).CaptureMouse();
 
-                // Set Element distance
-                Point currentPosition = e.GetPosition(Canvas);
-
+                MarkAllowedFields();
+                GC.Collect();
                 e.Handled = true;
             }
         }
@@ -72,15 +76,65 @@ namespace Chess.App
         /// <param name="e"></param>
         private void Figure_LeftMouseButtonUp(object sender, MouseButtonEventArgs e)
         {
-            (DragFigure as UIElement)?.ReleaseMouseCapture();
+            if (DragFigure == null)
+                return;
+
+            (DragFigure as UIElement).ReleaseMouseCapture();
+
+            Point DropPosition = new Point(Math.Round(Canvas.GetLeft((UIElement)DragFigure) / 100), Math.Round(Canvas.GetTop((UIElement)DragFigure) / 100));
+
+            // Check if the figure is on the game table and on one of the allowed fields
+            if (DropPosition.X >= 0 && DropPosition.Y >= 0 && DropPosition.X <= 7 && DropPosition.Y <= 7 && AllowedFields.Any(Field => Field == DropPosition))
+            {
+                DragFigure.OnStart = DropPosition == DragFigure.Position && DragFigure.OnStart;
+                DragFigure.Position = DropPosition;
+            }
 
             // Set figure on field
-            DragFigure.Position = new Point(Math.Round(Canvas.GetLeft((UIElement)DragFigure) / 100), Math.Round(Canvas.GetTop((UIElement)DragFigure) / 100));
             Canvas.SetLeft((UIElement)DragFigure, DragFigure.Position.X * 100);
             Canvas.SetTop((UIElement)DragFigure, DragFigure.Position.Y * 100);
 
+            // Clear
+            RemoveMarks();
             DragFigure = null;
+            AllowedFields = null;
             e.Handled = true;
+        }
+
+        /// <summary>
+        /// Set allowed fields and mark them
+        /// </summary>
+        private void MarkAllowedFields()
+        {
+            AllowedFields = DragFigure.GetMovement(Canvas.Children.Cast<UIElement>()
+                    .Where(Element => Element as IFigure != null)     // Only the figures
+                    .Select(Element => (((IFigure)Element).Position, ((IFigure)Element).Color == DragFigure.Color)));     // Get relavent data
+
+            // Mark the fields
+            foreach (Point Point in AllowedFields)
+            {
+                // Create and set on canvas
+                int Index = Canvas.Children.Add(new Rectangle()
+                {
+                    Tag = "Mark",
+                    Height = 100,
+                    Width = 100,
+                    Fill = Brushes.Green,
+                    Opacity = 0.5
+                });
+                Canvas.SetLeft(Canvas.Children[Index], Point.X * 100);
+                Canvas.SetTop(Canvas.Children[Index], Point.Y * 100);
+                Panel.SetZIndex(Canvas.Children[Index], 1);
+            }
+        }
+
+        /// <summary>
+        /// Remove all green field marks
+        /// </summary>
+        private void RemoveMarks()
+        {
+            foreach (UIElement Element in Canvas.Children.Cast<FrameworkElement>().Where(Element => (string)Element.Tag == "Mark").ToArray())
+                Canvas.Children.Remove(Element);
         }
         #endregion
 
@@ -103,21 +157,24 @@ namespace Chess.App
             {
                 Name = $"Tower_{ColorUp}_0",
                 Color = ColorUp,
-                Position = new Point(0, 0)
+                Position = new Point(0, 0),
+                Start = Start.Up
             });
 
             Canvas.Children.Add(new Jumper()
             {
                 Name = $"Jumper_{ColorUp}_0",
                 Color = ColorUp,
-                Position = new Point(1, 0)
+                Position = new Point(1, 0),
+                Start = Start.Up
             });
 
             Canvas.Children.Add(new Bishop()
             {
                 Name = $"Bishop_{ColorUp}_0",
                 Color = ColorUp,
-                Position = new Point(2, 0)
+                Position = new Point(2, 0),
+                Start = Start.Up
             });
 
             // King and queen at the right start pos
@@ -127,14 +184,16 @@ namespace Chess.App
                 {
                     Name = $"King_{ColorUp}",
                     Color = ColorUp,
-                    Position = new Point(3, 0)
+                    Position = new Point(3, 0),
+                    Start = Start.Up
                 });
 
                 Canvas.Children.Add(new Queen()
                 {
                     Name = $"Queen_{ColorUp}",
                     Color = ColorUp,
-                    Position = new Point(4, 0)
+                    Position = new Point(4, 0),
+                    Start = Start.Up
                 });
             }
             else
@@ -143,14 +202,16 @@ namespace Chess.App
                 {
                     Name = $"Queen_{ColorUp}",
                     Color = ColorUp,
-                    Position = new Point(3, 0)
+                    Position = new Point(3, 0),
+                    Start = Start.Up
                 });
 
                 Canvas.Children.Add(new King()
                 {
                     Name = $"King_{ColorUp}",
                     Color = ColorUp,
-                    Position = new Point(4, 0)
+                    Position = new Point(4, 0),
+                    Start = Start.Up
                 });
             }
 
@@ -158,21 +219,24 @@ namespace Chess.App
             {
                 Name = $"Bishop_{ColorUp}_1",
                 Color = ColorUp,
-                Position = new Point(5, 0)
+                Position = new Point(5, 0),
+                Start = Start.Up
             });
 
             Canvas.Children.Add(new Jumper()
             {
                 Name = $"Jumper_{ColorUp}_1",
                 Color = ColorUp,
-                Position = new Point(6, 0)
+                Position = new Point(6, 0),
+                Start = Start.Up
             });
 
             Canvas.Children.Add(new Tower()
             {
                 Name = $"Tower_{ColorUp}_1",
                 Color = ColorUp,
-                Position = new Point(7, 0)
+                Position = new Point(7, 0),
+                Start = Start.Up
             });
 
             // All the farmers
@@ -181,7 +245,8 @@ namespace Chess.App
                 {
                     Name = $"Farmer_{ColorUp}_{i}",
                     Color = ColorUp,
-                    Position = new Point(i, 1)
+                    Position = new Point(i, 1),
+                    Start = Start.Up
                 });
             #endregion
 
@@ -193,21 +258,24 @@ namespace Chess.App
             {
                 Name = $"Tower_{ColorDown}_0",
                 Color = ColorDown,
-                Position = new Point(0, 7)
+                Position = new Point(0, 7),
+                Start = Start.Down
             });
 
             Canvas.Children.Add(new Jumper()
             {
                 Name = $"Jumper_{ColorDown}_0",
                 Color = ColorDown,
-                Position = new Point(1, 7)
+                Position = new Point(1, 7),
+                Start = Start.Down
             });
 
             Canvas.Children.Add(new Bishop()
             {
                 Name = $"Bishop_{ColorDown}_0",
                 Color = ColorDown,
-                Position = new Point(2, 7)
+                Position = new Point(2, 7),
+                Start = Start.Down
             });
 
             // King and queen at the right start pos
@@ -217,14 +285,16 @@ namespace Chess.App
                 {
                     Name = $"King_{ColorDown}",
                     Color = ColorDown,
-                    Position = new Point(3, 7)
+                    Position = new Point(3, 7),
+                    Start = Start.Down
                 });
 
                 Canvas.Children.Add(new Queen()
                 {
                     Name = $"Queen_{ColorDown}",
                     Color = ColorDown,
-                    Position = new Point(4, 7)
+                    Position = new Point(4, 7),
+                    Start = Start.Down
                 });
             }
             else
@@ -233,14 +303,16 @@ namespace Chess.App
                 {
                     Name = $"Queen_{ColorDown}",
                     Color = ColorDown,
-                    Position = new Point(3, 7)
+                    Position = new Point(3, 7),
+                    Start = Start.Down
                 });
 
                 Canvas.Children.Add(new King()
                 {
                     Name = $"King_{ColorDown}",
                     Color = ColorDown,
-                    Position = new Point(4, 7)
+                    Position = new Point(4, 7),
+                    Start = Start.Down
                 });
             }
 
@@ -248,21 +320,24 @@ namespace Chess.App
             {
                 Name = $"Bishop_{ColorDown}_1",
                 Color = ColorDown,
-                Position = new Point(5, 7)
+                Position = new Point(5, 7),
+                Start = Start.Down
             });
 
             Canvas.Children.Add(new Jumper()
             {
                 Name = $"Jumper_{ColorDown}_1",
                 Color = ColorDown,
-                Position = new Point(6, 7)
+                Position = new Point(6, 7),
+                Start = Start.Down
             });
 
             Canvas.Children.Add(new Tower()
             {
                 Name = $"Tower_{ColorDown}_1",
                 Color = ColorDown,
-                Position = new Point(7, 7)
+                Position = new Point(7, 7),
+                Start = Start.Down
             });
 
             // All the farmers
@@ -271,7 +346,8 @@ namespace Chess.App
                 {
                     Name = $"Farmer_{ColorDown}_{i}",
                     Color = ColorDown,
-                    Position = new Point(i, 6)
+                    Position = new Point(i, 6),
+                    Start = Start.Down
                 });
             #endregion
 

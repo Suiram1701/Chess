@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Chess.Figures
@@ -24,9 +26,97 @@ namespace Chess.Figures
             set => SetValue(PositionProperty, value);
         }
 
+        public Start Start { get; set; }
+
+        public bool OnStart { get; set; } = true;
+
         public Bishop()
         {
             InitializeComponent();
+        }
+
+        public IEnumerable<Point> GetMovement(IEnumerable<(Point Position, bool isFriend)> OtherFigures)
+        {
+            Point Pos = Position;
+
+            // Top-left
+            Pos.X--;
+            Pos.Y--;
+            while (Pos.X >= 0 && Pos.X <= 7 && Pos.Y >= 0 && Pos.Y <= 7)
+            {
+                if (OtherFigures.Any(Figure => Figure.Position.X == Pos.X && Figure.Position.Y == Pos.Y && !Figure.isFriend))
+                {
+                    yield return new Point(Pos.X, Pos.Y);
+                    break;
+                }
+                else if (!OtherFigures.Any(Figure => Figure.Position.X == Pos.X && Figure.Position.Y == Pos.Y))
+                    yield return new Point(Pos.X, Pos.Y);
+                else
+                    break;
+
+                Pos.X--;
+                Pos.Y--;
+            }
+            Pos = Position;
+
+            // Top-right
+            Pos.X++;
+            Pos.Y--;
+            while (Pos.X >= 0 && Pos.X <= 7 && Pos.Y >= 0 && Pos.Y <= 7)
+            {
+                if (OtherFigures.Any(Figure => Figure.Position.X == Pos.X && Figure.Position.Y == Pos.Y && !Figure.isFriend))
+                {
+                    yield return new Point(Pos.X, Pos.Y);
+                    break;
+                }
+                else if (!OtherFigures.Any(Figure => Figure.Position.X == Pos.X && Figure.Position.Y == Pos.Y))
+                    yield return new Point(Pos.X, Pos.Y);
+                else
+                    break;
+
+                Pos.X++;
+                Pos.Y--;
+            }
+            Pos = Position;
+
+            // Down-right
+            Pos.X++;
+            Pos.Y++;
+            while (Pos.X >= 0 && Pos.X <= 7 && Pos.Y >= 0 && Pos.Y <= 7)
+            {
+                if (OtherFigures.Any(Figure => Figure.Position.X == Pos.X && Figure.Position.Y == Pos.Y && !Figure.isFriend))
+                {
+                    yield return new Point(Pos.X, Pos.Y);
+                    break;
+                }
+                else if (!OtherFigures.Any(Figure => Figure.Position.X == Pos.X && Figure.Position.Y == Pos.Y))
+                    yield return new Point(Pos.X, Pos.Y);
+                else
+                    break;
+
+                Pos.X++;
+                Pos.Y++;
+            }
+            Pos = Position;
+
+            // Down-left
+            Pos.X--;
+            Pos.Y++;
+            while (Pos.X >= 0 && Pos.X <= 7 && Pos.Y >= 0 && Pos.Y <= 7)
+            {
+                if (OtherFigures.Any(Figure => Figure.Position.X == Pos.X && Figure.Position.Y == Pos.Y && !Figure.isFriend))
+                {
+                    yield return new Point(Pos.X, Pos.Y);
+                    break;
+                }
+                else if (!OtherFigures.Any(Figure => Figure.Position.X == Pos.X && Figure.Position.Y == Pos.Y))
+                    yield return new Point(Pos.X, Pos.Y);
+                else
+                    break;
+
+                Pos.X--;
+                Pos.Y++;
+            }
         }
     }
 }
