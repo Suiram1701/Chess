@@ -7,11 +7,12 @@
              xmlns:local="clr-namespace:Chess.Figures"
              DataContext="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}"
              mc:Ignorable="d" 
-             Height="100" Width="100" Canvas.Left="{Binding Position.X, Mode=OneWay}" Canvas.Top="{Binding Position.Y, Mode=OneWay}">
+             Height="100" Width="100"
+             Panel.ZIndex="2">
     <UserControl.Resources>
         <Convert:DataToImageConvert x:Key="DataToImage"/>
     </UserControl.Resources>
     <Grid Height="100" Width="100">
-        <Image Source="{Binding Color, Converter={StaticResource DataToImage}, ConverterParameter=Farmer}" Height="100" Width="100" Stretch="Fill" Visibility="Visible" Panel.ZIndex="1"/>
+        <Image Source="{Binding Color, Converter={StaticResource DataToImage}, ConverterParameter=Farmer}" Height="100" Width="100" Stretch="Fill" Visibility="Visible" Panel.ZIndex="2"/>
     </Grid>
 </UserControl>

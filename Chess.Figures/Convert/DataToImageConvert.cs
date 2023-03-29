@@ -13,7 +13,7 @@ namespace Chess.Figures.Convert
             Color Color = (Color)value;
             string TargetFigure = (string)parameter;
 
-            // Return image source $"/Chess.Figures;component/Resources/{TargetFigure}{Color}.png";
+            // Return image source
             BitmapImage BmI = new BitmapImage();
             BmI.BeginInit();
             BmI.UriSource = new Uri($"/Chess.Figures;component/Resources/{TargetFigure}{Color}.png", UriKind.Relative);
