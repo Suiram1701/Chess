@@ -49,6 +49,7 @@ namespace Chess.App
 
                 // Prepare for move
                 DragFigure = (IFigure)sender;
+                Panel.SetZIndex((UIElement)DragFigure, 5);
                 ((UIElement)DragFigure).CaptureMouse();
 
                 MarkAllowedFields();
@@ -98,6 +99,15 @@ namespace Chess.App
                 if (CurrentPlayer == null)     // First moved team begin
                     CurrentPlayer = ((IFigure)sender).Color;
 
+                // if on a player kill him
+                UIElement PlayerToKill = Canvas.Children.Cast<UIElement>().FirstOrDefault(Element => Element as IFigure != null && (Element as IFigure).Position == DropPosition);
+                if (PlayerToKill != null)
+                    Canvas.Children.Remove(PlayerToKill);
+
+                // If you kill the enemy king you win
+                if (PlayerToKill?.GetType() == typeof(King))
+                    PlayerWin(CurrentPlayer ?? Color.Black);
+
                 // Add to move list
                 MoveListViews.Items.Add(new MoveListView()
                 {
@@ -118,6 +128,7 @@ namespace Chess.App
             // Set figure on field
             Canvas.SetLeft((UIElement)DragFigure, DragFigure.Position.X * 100);
             Canvas.SetTop((UIElement)DragFigure, DragFigure.Position.Y * 100);
+            Panel.SetZIndex((UIElement)DragFigure, 2);
 
             // Clear
             RemoveMarks();
@@ -391,6 +402,19 @@ namespace Chess.App
                     Canvas.SetTop(element, ((IFigure)element).Position.Y * 100);
                 }
             }
+        }
+
+        /// <summary>
+        /// View that a player win
+        /// </summary>
+        /// <param name="color">The player</param>
+        private void PlayerWin(Color color)
+        {
+            MessageBox.Show($"Der Spieler {(color == Color.Black ? "Schwarz" : "Weiß")} hat gewonnen!", "Ein Spieler hat gewonnen!", MessageBoxButton.OK);
+
+            // Back to main menu
+            new MainMenu().Show();
+            Close();
         }
     }
 }
