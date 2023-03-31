@@ -17,7 +17,7 @@ namespace Chess.App
     /// </summary>
     public partial class ChessGame : Window
     {
-        private Color? CurrentPlayer { get; set; } = null;
+        private Color CurrentPlayer { get; set; } = Color.White;
 
         public ChessGame()
         {
@@ -41,7 +41,7 @@ namespace Chess.App
         {
             if (sender as IFigure != null)
             {
-                if (((IFigure)sender).Color != CurrentPlayer && CurrentPlayer != null)     // Player must selected
+                if (((IFigure)sender).Color != CurrentPlayer)     // Player must selected
                     return;
 
                 // Prepare for move
@@ -93,9 +93,6 @@ namespace Chess.App
             // Check if the figure is on the game table and on one of the allowed fields
             if (DropPosition.X >= 0 && DropPosition.Y >= 0 && DropPosition.X <= 7 && DropPosition.Y <= 7 && AllowedFields.Any(Field => Field == DropPosition))
             {
-                if (CurrentPlayer == null)     // First moved team begin
-                    CurrentPlayer = ((IFigure)sender).Color;
-
                 // if on a player kill him
                 UIElement PlayerToKill = Canvas.Children.Cast<UIElement>().FirstOrDefault(Element => Element as IFigure != null && (Element as IFigure).Position == DropPosition);
                 if (PlayerToKill != null)
@@ -103,7 +100,7 @@ namespace Chess.App
 
                 // If you kill the enemy king you win
                 if (PlayerToKill?.GetType() == typeof(King))
-                    PlayerWin(CurrentPlayer ?? Color.Black);
+                    PlayerWin(CurrentPlayer);
 
                 // Add to move list
                 MoveListViews.Items.Add(new MoveListView()

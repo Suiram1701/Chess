@@ -52,11 +52,6 @@
     <Compile Include="Farmer.xaml.cs">
       <DependentUpon>Farmer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Figures.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Figures.resx</DependentUpon>
-    </Compile>
     <Compile Include="IFigure.cs" />
     <Compile Include="Jumper.xaml.cs">
       <DependentUpon>Jumper.xaml</DependentUpon>
@@ -71,13 +66,6 @@
     <Compile Include="Tower.xaml.cs">
       <DependentUpon>Tower.xaml</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Figures.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Figures.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\FarmerBlack.png" />
