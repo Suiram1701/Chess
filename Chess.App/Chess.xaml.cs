@@ -18,6 +18,8 @@ namespace Chess.App
     /// </summary>
     public partial class ChessGame : Window
     {
+        private Color? CurrentPlayer { get; set; } = null;
+
         public ObservableCollection<(string FigureName, Point Start, Point End)> MoveList { get; set; } = new ObservableCollection<(string FigureName, Point Start, Point End)>();
 
         public ChessGame()
@@ -42,6 +44,9 @@ namespace Chess.App
         {
             if (sender as IFigure != null)
             {
+                if (((IFigure)sender).Color != CurrentPlayer && CurrentPlayer != null)     // Player must selected
+                    return;
+
                 // Prepare for move
                 DragFigure = (IFigure)sender;
                 ((UIElement)DragFigure).CaptureMouse();
@@ -90,6 +95,9 @@ namespace Chess.App
             // Check if the figure is on the game table and on one of the allowed fields
             if (DropPosition.X >= 0 && DropPosition.Y >= 0 && DropPosition.X <= 7 && DropPosition.Y <= 7 && AllowedFields.Any(Field => Field == DropPosition))
             {
+                if (CurrentPlayer == null)     // First moved team begin
+                    CurrentPlayer = ((IFigure)sender).Color;
+
                 // Add to move list
                 MoveListViews.Items.Add(new MoveListView()
                 {
@@ -99,6 +107,9 @@ namespace Chess.App
                     EndField = DropPosition,
                 });
                 Scroll.ScrollToEnd();
+
+                // select other player
+                CurrentPlayer = CurrentPlayer == Color.Black ? Color.White : Color.Black;
 
                 DragFigure.OnStart = DropPosition == DragFigure.Position && DragFigure.OnStart;
                 DragFigure.Position = DropPosition;

@@ -39,7 +39,6 @@ namespace Chess.Figures
 
         public IEnumerable<Point> GetMovement(IEnumerable<(Point Position, bool isFriend)> OtherFigures)
         {
-
             // One forward
             if (!OtherFigures.Any(Figure => Figure.Position.X == Position.X && Figure.Position.Y == Position.Y + (Start == Start.Up ? 1 : -1)))
                 yield return new Point(Position.X, Position.Y + (Start == Start.Up ? 1 : -1));
