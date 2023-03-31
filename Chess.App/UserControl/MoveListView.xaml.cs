@@ -1,5 +1,4 @@
-﻿using Chess.Figures;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using Control = System.Windows.Controls;
 

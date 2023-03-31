@@ -8,7 +8,7 @@ namespace Chess.App.Convert
     [ValueConversion(typeof(Point), typeof(string))]
     internal class PointStringConvert : IValueConverter
     {
-        private readonly char[] Letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+        private readonly char[] Letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

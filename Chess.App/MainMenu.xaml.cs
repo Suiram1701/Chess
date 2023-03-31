@@ -1,9 +1,4 @@
-﻿using System.Resources;
-using System.Windows;
-using System.Reflection;
-using Control = System.Windows.Controls;
-using System;
-using System.Windows.Navigation;
+﻿using System.Windows;
 
 namespace Chess.App
 {

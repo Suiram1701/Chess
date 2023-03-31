@@ -1,15 +1,14 @@
-﻿using System.Windows;
+﻿using Chess.App.UserControl;
 using Chess.Figures;
-using System.Windows.Controls;
-using System.Collections.Generic;
-using System.Windows.Input;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Shapes;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using Color = Chess.Figures.Color;
-using System.Collections.ObjectModel;
-using Chess.App.UserControl;
 
 namespace Chess.App
 {

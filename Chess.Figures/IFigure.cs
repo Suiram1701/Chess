@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows;
 
 namespace Chess.Figures
@@ -27,7 +26,7 @@ namespace Chess.Figures
         /// The team color of the figure
         /// </summary>
         Color Color { get; set; }
-        
+
         /// <summary>
         /// The current position in the grid
         /// </summary>

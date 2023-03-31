@@ -41,7 +41,7 @@ namespace Chess.Figures
         public IEnumerable<Point> GetMovement(IEnumerable<(Point Position, bool isFriend)> OtherFigures)
         {
             if ((OtherFigures.Any(Figure => Figure.Position.X == Position.X - 1 && Figure.Position.Y == Position.Y && !Figure.isFriend) ||
-                !OtherFigures.Any(Figure => Figure.Position.X == Position.X - 1  && Figure.Position.Y == Position.Y)) &&
+                !OtherFigures.Any(Figure => Figure.Position.X == Position.X - 1 && Figure.Position.Y == Position.Y)) &&
                 Position.X - 1 >= 0 && Position.X - 1 <= 7 && Position.Y >= 0 && Position.Y <= 7)     // Inside game table
                 yield return new Point(Position.X - 1, Position.Y);     // Left
 
