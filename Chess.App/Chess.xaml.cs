@@ -8,6 +8,8 @@ using System.Linq;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using Color = Chess.Figures.Color;
+using System.Collections.ObjectModel;
+using Chess.App.UserControl;
 
 namespace Chess.App
 {
@@ -16,6 +18,8 @@ namespace Chess.App
     /// </summary>
     public partial class ChessGame : Window
     {
+        public ObservableCollection<(string FigureName, Point Start, Point End)> MoveList { get; set; } = new ObservableCollection<(string FigureName, Point Start, Point End)>();
+
         public ChessGame()
         {
             // TODO: Rechts (als erstes) geschlagene figuren
@@ -86,6 +90,16 @@ namespace Chess.App
             // Check if the figure is on the game table and on one of the allowed fields
             if (DropPosition.X >= 0 && DropPosition.Y >= 0 && DropPosition.X <= 7 && DropPosition.Y <= 7 && AllowedFields.Any(Field => Field == DropPosition))
             {
+                // Add to move list
+                MoveListViews.Items.Add(new MoveListView()
+                {
+                    Team = DragFigure.Color == Color.Black ? Brushes.SaddleBrown : Brushes.BurlyWood,
+                    FigureName = DragFigure.Name,
+                    StartField = DragFigure.Position,
+                    EndField = DropPosition,
+                });
+                Scroll.ScrollToEnd();
+
                 DragFigure.OnStart = DropPosition == DragFigure.Position && DragFigure.OnStart;
                 DragFigure.Position = DropPosition;
             }

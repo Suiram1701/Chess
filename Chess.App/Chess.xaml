@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Figure="clr-namespace:Chess.Figures;assembly=Chess.Figures"
         xmlns:local="clr-namespace:Chess.App"
+        xmlns:Convert="clr-namespace:Chess.App.Convert"
         mc:Ignorable="d"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        DataContext="{Binding RelativeSource={RelativeSource Self}, Mode=OneWay}"
         ResizeMode="NoResize"
-        Height="920" Width="1120"
+        Height="920" Width="1280"
         Title="Schach" WindowStartupLocation="CenterScreen">
     <Canvas>
         <Label Content="     A            B            C           D            E            F            G            H" Canvas.Left="40" Canvas.Top="4" HorizontalAlignment="Center" Height="40" VerticalAlignment="Top" Width="800" FontSize="26"/>
@@ -107,9 +108,7 @@
             <Rectangle Tag="76" Height="100" Width="100" Fill="#b66241" Grid.Row="7" Grid.Column="6" Panel.ZIndex="0"/>
             <Rectangle Tag="77" Height="100" Width="100" Fill="#e5d7c5" Grid.Row="7" Grid.Column="7" Panel.ZIndex="0"/>
             <!--#endregion-->
-            <Canvas x:Name="Canvas" Grid.ColumnSpan="8" Grid.RowSpan="8">
-                
-            </Canvas>
+            <Canvas x:Name="Canvas" Grid.ColumnSpan="8" Grid.RowSpan="8"/>
         </Grid>
         <Label Content="     A            B            C           D            E            F            G            H" Canvas.Left="40" Canvas.Top="837" Height="40" Width="800" FontSize="26" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label Content="1" FontSize="26" Canvas.Left="840" Canvas.Top="71" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -120,5 +119,9 @@
         <Label Content="6" FontSize="26" Canvas.Left="840" Canvas.Top="571" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Label Content="7" FontSize="26" Canvas.Left="840" Canvas.Top="671" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Label Content="8" FontSize="26" Canvas.Left="840" Canvas.Top="771" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+        <ScrollViewer x:Name="Scroll" Canvas.Left="900" Canvas.Top="44" HorizontalAlignment="Center" VerticalAlignment="Center" Width="317" Height="800" HorizontalScrollBarVisibility="Hidden">
+            <ListBox x:Name="MoveListViews" Width="300"/>
+        </ScrollViewer>
     </Canvas>
 </Window>

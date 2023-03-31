@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Chess.App.UserControl.MoveListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Chess.App.UserControl"
+             xmlns:Convert="clr-namespace:Chess.App.Convert"
+             mc:Ignorable="d" 
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             Height="80" Width="300">
+    <UserControl.Resources>
+        <Convert:PointStringConvert x:Key="PointString"/>
+    </UserControl.Resources>
+    <Canvas>
+        <Line Y1="80" Stroke="{Binding Team}" StrokeThickness="3"/>
+        <Label Canvas.Left="10" Canvas.Top="8" Content="{Binding FigureName}" FontSize="35" HorizontalAlignment="Center" VerticalAlignment="Top" Height="64" Width="150"/>
+
+        <Label Canvas.Left="170" Canvas.Top="20" Content="{Binding StartField, Converter={StaticResource PointString}}" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Line Canvas.Left="208" Canvas.Top="43" X1="35" Stroke="Black" StrokeThickness="4" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Polyline Canvas.Left="248" Canvas.Top="43" Points="0,0 -5,-5 -5,5 0,0" Fill="Black" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Label Canvas.Left="250" Canvas.Top="20" Content="{Binding EndField, Converter={StaticResource PointString}}" FontSize="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+    </Canvas>
+</UserControl>

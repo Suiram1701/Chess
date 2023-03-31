@@ -19,10 +19,14 @@ namespace Chess.Figures
     public interface IFigure
     {
         /// <summary>
+        /// German name of the figure
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
         /// The team color of the figure
         /// </summary>
         Color Color { get; set; }
-
         
         /// <summary>
         /// The current position in the grid

@@ -27,6 +27,8 @@ namespace Chess.Figures
             set => SetValue(PositionProperty, value);
         }
 
+        string IFigure.Name { get; } = "König";
+
         public Start Start { get; set; }
 
         public bool OnStart { get; set; } = true;
