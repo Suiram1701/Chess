@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Color = Chess.Figures.Color;
 
@@ -21,11 +22,8 @@ namespace Chess.App
 
         public ChessGame()
         {
-            // TODO: Rechts (als erstes) geschlagene figuren
-            // TODO: Verlauf rechts
-
             InitializeComponent();
-            SetFigures(Color.Black);
+            SetFigures(Color.White);
         }
 
         #region Drag & drop
@@ -41,8 +39,10 @@ namespace Chess.App
         {
             if (sender as IFigure != null)
             {
+#if !DEBUG
                 if (((IFigure)sender).Color != CurrentPlayer)     // Player must selected
                     return;
+#endif
 
                 // Prepare for move
                 DragFigure = (IFigure)sender;
@@ -94,13 +94,40 @@ namespace Chess.App
             if (DropPosition.X >= 0 && DropPosition.Y >= 0 && DropPosition.X <= 7 && DropPosition.Y <= 7 && AllowedFields.Any(Field => Field == DropPosition))
             {
                 // if on a player kill him
-                UIElement PlayerToKill = Canvas.Children.Cast<UIElement>().FirstOrDefault(Element => Element as IFigure != null && (Element as IFigure).Position == DropPosition);
+                UIElement PlayerToKill = Canvas.Children.Cast<UIElement>()
+                    .FirstOrDefault(Element => Element as IFigure != null && (Element as IFigure).Position == DropPosition);
                 if (PlayerToKill != null)
                     Canvas.Children.Remove(PlayerToKill);
 
                 // If you kill the enemy king you win
                 if (PlayerToKill?.GetType() == typeof(King))
                     PlayerWin(CurrentPlayer);
+
+                #region Special moves
+                string MoveDetail = string.Empty;
+                // Check for rochade
+                if (PossibleRochade.Any(Rochade => Rochade.KingTarget == DropPosition) && DragFigure.GetType() == typeof(King))
+                {
+                    (Point KingTarget, string TowerName, Point TowerTarget) = PossibleRochade.First(Rochade => Rochade.KingTarget == DropPosition);
+                    IFigure Tower = (IFigure)Canvas.Children.OfType<FrameworkElement>().FirstOrDefault(Element => Element.Name == TowerName);
+
+                    // Add to move history
+                    MoveDetail = "Rochade";
+                    MoveListViews.Items.Add(new MoveListView()
+                    {
+                        Team = Tower.Color == Color.Black ? Brushes.SaddleBrown : Brushes.BurlyWood,
+                        FigureName = Tower.Name,
+                        StartField = Tower.Position,
+                        EndField = TowerTarget,
+                        Detail = MoveDetail
+                    });
+
+                    // Move tower and update position
+                    Tower.Position = TowerTarget;
+                    Canvas.SetLeft((UIElement)Tower, Tower.Position.X * 100);
+                    Canvas.SetTop((UIElement)Tower, Tower.Position.Y * 100);
+                }
+                #endregion
 
                 // Add to move list
                 MoveListViews.Items.Add(new MoveListView()
@@ -109,6 +136,7 @@ namespace Chess.App
                     FigureName = DragFigure.Name,
                     StartField = DragFigure.Position,
                     EndField = DropPosition,
+                    Detail = MoveDetail
                 });
                 Scroll.ScrollToEnd();
 
@@ -138,7 +166,15 @@ namespace Chess.App
         {
             AllowedFields = DragFigure.GetMovement(Canvas.Children.Cast<UIElement>()
                     .Where(Element => Element as IFigure != null)     // Only the figures
-                    .Select(Element => (((IFigure)Element).Position, ((IFigure)Element).Color == DragFigure.Color)));     // Get relavent data
+                    .Select(Element => (((IFigure)Element).Position, ((IFigure)Element).Color == DragFigure.Color))).ToList();     // Get relavent data
+
+            // Get possiblerochade moves
+            if (DragFigure.GetType() == typeof(King))
+            {
+                PossibleRochade = GetPossibleRochade();
+                foreach ((Point KingTarget, string TowerName, Point TowerTarget) in PossibleRochade)
+                    AllowedFields = AllowedFields.Append(KingTarget);
+            }
 
             // Mark the fields
             foreach (Point Point in AllowedFields)
@@ -167,236 +203,6 @@ namespace Chess.App
                 Canvas.Children.Remove(Element);
         }
         #endregion
-
-        /// <summary>
-        /// Set all figures new at the table
-        /// </summary>
-        /// <param name="ColorUp"></param>
-        private void SetFigures(Color ColorUp)
-        {
-            // Clear old
-            List<UIElement> Elements = new List<UIElement>();
-            foreach (UIElement Element in Grid.Children)
-            {
-                if (Element as IFigure != null)
-                    Elements.Add(Element);
-            }
-
-            #region Set figures up
-            Canvas.Children.Add(new Tower()
-            {
-                Name = $"Tower_{ColorUp}_0",
-                Color = ColorUp,
-                Position = new Point(0, 0),
-                Start = Start.Up
-            });
-
-            Canvas.Children.Add(new Jumper()
-            {
-                Name = $"Jumper_{ColorUp}_0",
-                Color = ColorUp,
-                Position = new Point(1, 0),
-                Start = Start.Up
-            });
-
-            Canvas.Children.Add(new Bishop()
-            {
-                Name = $"Bishop_{ColorUp}_0",
-                Color = ColorUp,
-                Position = new Point(2, 0),
-                Start = Start.Up
-            });
-
-            // King and queen at the right start pos
-            if (ColorUp == Color.Black)
-            {
-                Canvas.Children.Add(new King()
-                {
-                    Name = $"King_{ColorUp}",
-                    Color = ColorUp,
-                    Position = new Point(3, 0),
-                    Start = Start.Up
-                });
-
-                Canvas.Children.Add(new Queen()
-                {
-                    Name = $"Queen_{ColorUp}",
-                    Color = ColorUp,
-                    Position = new Point(4, 0),
-                    Start = Start.Up
-                });
-            }
-            else
-            {
-                Canvas.Children.Add(new Queen()
-                {
-                    Name = $"Queen_{ColorUp}",
-                    Color = ColorUp,
-                    Position = new Point(3, 0),
-                    Start = Start.Up
-                });
-
-                Canvas.Children.Add(new King()
-                {
-                    Name = $"King_{ColorUp}",
-                    Color = ColorUp,
-                    Position = new Point(4, 0),
-                    Start = Start.Up
-                });
-            }
-
-            Canvas.Children.Add(new Bishop()
-            {
-                Name = $"Bishop_{ColorUp}_1",
-                Color = ColorUp,
-                Position = new Point(5, 0),
-                Start = Start.Up
-            });
-
-            Canvas.Children.Add(new Jumper()
-            {
-                Name = $"Jumper_{ColorUp}_1",
-                Color = ColorUp,
-                Position = new Point(6, 0),
-                Start = Start.Up
-            });
-
-            Canvas.Children.Add(new Tower()
-            {
-                Name = $"Tower_{ColorUp}_1",
-                Color = ColorUp,
-                Position = new Point(7, 0),
-                Start = Start.Up
-            });
-
-            // All the farmers
-            for (int i = 0; i < 8; i++)
-                Canvas.Children.Add(new Farmer()
-                {
-                    Name = $"Farmer_{ColorUp}_{i}",
-                    Color = ColorUp,
-                    Position = new Point(i, 1),
-                    Start = Start.Up
-                });
-            #endregion
-
-            // Reverse color
-            Color ColorDown = ColorUp == Color.Black ? Color.White : Color.Black;
-
-            #region Set figures down
-            Canvas.Children.Add(new Tower()
-            {
-                Name = $"Tower_{ColorDown}_0",
-                Color = ColorDown,
-                Position = new Point(0, 7),
-                Start = Start.Down
-            });
-
-            Canvas.Children.Add(new Jumper()
-            {
-                Name = $"Jumper_{ColorDown}_0",
-                Color = ColorDown,
-                Position = new Point(1, 7),
-                Start = Start.Down
-            });
-
-            Canvas.Children.Add(new Bishop()
-            {
-                Name = $"Bishop_{ColorDown}_0",
-                Color = ColorDown,
-                Position = new Point(2, 7),
-                Start = Start.Down
-            });
-
-            // King and queen at the right start pos
-            if (ColorDown == Color.White)
-            {
-                Canvas.Children.Add(new King()
-                {
-                    Name = $"King_{ColorDown}",
-                    Color = ColorDown,
-                    Position = new Point(3, 7),
-                    Start = Start.Down
-                });
-
-                Canvas.Children.Add(new Queen()
-                {
-                    Name = $"Queen_{ColorDown}",
-                    Color = ColorDown,
-                    Position = new Point(4, 7),
-                    Start = Start.Down
-                });
-            }
-            else
-            {
-                Canvas.Children.Add(new Queen()
-                {
-                    Name = $"Queen_{ColorDown}",
-                    Color = ColorDown,
-                    Position = new Point(3, 7),
-                    Start = Start.Down
-                });
-
-                Canvas.Children.Add(new King()
-                {
-                    Name = $"King_{ColorDown}",
-                    Color = ColorDown,
-                    Position = new Point(4, 7),
-                    Start = Start.Down
-                });
-            }
-
-            Canvas.Children.Add(new Bishop()
-            {
-                Name = $"Bishop_{ColorDown}_1",
-                Color = ColorDown,
-                Position = new Point(5, 7),
-                Start = Start.Down
-            });
-
-            Canvas.Children.Add(new Jumper()
-            {
-                Name = $"Jumper_{ColorDown}_1",
-                Color = ColorDown,
-                Position = new Point(6, 7),
-                Start = Start.Down
-            });
-
-            Canvas.Children.Add(new Tower()
-            {
-                Name = $"Tower_{ColorDown}_1",
-                Color = ColorDown,
-                Position = new Point(7, 7),
-                Start = Start.Down
-            });
-
-            // All the farmers
-            for (int i = 0; i < 8; i++)
-                Canvas.Children.Add(new Farmer()
-                {
-                    Name = $"Farmer_{ColorDown}_{i}",
-                    Color = ColorDown,
-                    Position = new Point(i, 6),
-                    Start = Start.Down
-                });
-            #endregion
-
-            // Add drag & drop event and position for all
-            foreach (UIElement element in Canvas.Children)
-            {
-                if (element as IFigure != null)
-                {
-                    // Add handlers
-                    element.MouseLeftButtonDown += Figure_LeftMouseButtonDown;
-                    element.MouseMove += Figure_MouseMove;
-                    element.MouseLeftButtonUp += Figure_LeftMouseButtonUp;
-
-                    // Position
-                    Canvas.SetLeft(element, ((IFigure)element).Position.X * 100);
-                    Canvas.SetTop(element, ((IFigure)element).Position.Y * 100);
-                }
-            }
-        }
 
         /// <summary>
         /// View that a player win

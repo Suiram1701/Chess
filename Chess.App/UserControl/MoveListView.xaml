@@ -19,5 +19,7 @@
         <Line Canvas.Left="208" Canvas.Top="43" X1="35" Stroke="Black" StrokeThickness="4" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Polyline Canvas.Left="248" Canvas.Top="43" Points="0,0 -5,-5 -5,5 0,0" Fill="Black" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Label Canvas.Left="250" Canvas.Top="20" Content="{Binding EndField, Converter={StaticResource PointString}}" FontSize="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <Label Canvas.Left="196" Canvas.Top="50" Content="{Binding Detail}" FontSize="18"/>
     </Canvas>
 </UserControl>

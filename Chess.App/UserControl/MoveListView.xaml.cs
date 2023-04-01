@@ -37,6 +37,12 @@ namespace Chess.App.UserControl
             set => SetValue(EndFieldProperty, value);
         }
 
+        public static DependencyProperty DetailProperty = DependencyProperty.Register("Detail", typeof(string), typeof(MoveListView), new PropertyMetadata(string.Empty));
+        public string Detail
+        {
+            get => (string)(GetValue(DetailProperty));
+            set => SetValue(DetailProperty, value);
+        }
 
         public MoveListView()
         {
