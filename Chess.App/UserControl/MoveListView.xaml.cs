@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Windows;
 using System.Windows.Media;
 using Control = System.Windows.Controls;
 
@@ -40,9 +42,13 @@ namespace Chess.App.UserControl
         public static DependencyProperty DetailProperty = DependencyProperty.Register("Detail", typeof(string), typeof(MoveListView), new PropertyMetadata(string.Empty));
         public string Detail
         {
-            get => (string)(GetValue(DetailProperty));
+            get => (string)GetValue(DetailProperty);
             set => SetValue(DetailProperty, value);
         }
+
+        public string FieldName;
+
+        public Type FigureType;
 
         public MoveListView()
         {

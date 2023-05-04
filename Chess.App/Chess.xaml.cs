@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Color = Chess.Figures.Color;
 
@@ -23,12 +22,13 @@ namespace Chess.App
         public ChessGame()
         {
             InitializeComponent();
-            SetFigures(Color.White);
+            SetFigures(Color.Black);
         }
 
         #region Drag & drop
         private IFigure DragFigure { get; set; } = null;
         private IEnumerable<Point> AllowedFields { get; set; } = null;
+        private (bool Possible, string FigureName) EnPassend = (false, null);
 
         /// <summary>
         /// Select the figure as current item
@@ -43,7 +43,6 @@ namespace Chess.App
                 if (((IFigure)sender).Color != CurrentPlayer)     // Player must selected
                     return;
 #endif
-
                 // Prepare for move
                 DragFigure = (IFigure)sender;
                 Panel.SetZIndex((UIElement)DragFigure, 5);
@@ -119,6 +118,8 @@ namespace Chess.App
                         FigureName = Tower.Name,
                         StartField = Tower.Position,
                         EndField = TowerTarget,
+                        FieldName = ((FrameworkElement)Tower).Name,
+                        FigureType = typeof(Tower),
                         Detail = MoveDetail
                     });
 
@@ -126,6 +127,15 @@ namespace Chess.App
                     Tower.Position = TowerTarget;
                     Canvas.SetLeft((UIElement)Tower, Tower.Position.X * 100);
                     Canvas.SetTop((UIElement)Tower, Tower.Position.Y * 100);
+                }
+                else if (EnPassend.Possible && DragFigure.GetType() == typeof(Farmer))     // Do en passend if possible
+                {
+                    MoveDetail = "En Passend";
+
+                    // Kill figure
+                    IFigure farmerToKill = Canvas.Children.OfType<IFigure>().FirstOrDefault(Figure => ((FrameworkElement)Figure).Name == EnPassend.FigureName);
+                    if (farmerToKill != null)
+                        Canvas.Children.Remove((UIElement)farmerToKill);
                 }
                 #endregion
 
@@ -136,6 +146,8 @@ namespace Chess.App
                     FigureName = DragFigure.Name,
                     StartField = DragFigure.Position,
                     EndField = DropPosition,
+                    FieldName = ((FrameworkElement)DragFigure).Name,
+                    FigureType = DragFigure.GetType(),
                     Detail = MoveDetail
                 });
                 Scroll.ScrollToEnd();
@@ -174,6 +186,23 @@ namespace Chess.App
                 PossibleRochade = GetPossibleRochade();
                 foreach ((Point KingTarget, string TowerName, Point TowerTarget) in PossibleRochade)
                     AllowedFields = AllowedFields.Append(KingTarget);
+            }
+
+            // Check for en passend moves
+            if (DragFigure.GetType() == typeof(Farmer))
+            {
+                MoveListView lastMove = MoveListViews.Items.Cast<MoveListView>().LastOrDefault();
+                if (lastMove?.FigureType == typeof(Farmer))
+                {
+                    // Check position
+                    if (DragFigure.Position.Y == lastMove.EndField.Y && (DragFigure.Position.X == lastMove.EndField.X - 1 || DragFigure.Position.X == lastMove.EndField.X + 1))
+                    {
+                        // If possible prepare en passend
+                        AllowedFields = AllowedFields.Append(new Point(lastMove.EndField.X, lastMove.EndField.Y + (DragFigure.Color == Color.White ? -1 : +1)));
+                        EnPassend.FigureName = lastMove.FieldName;
+                        EnPassend.Possible = true;
+                    }
+                }
             }
 
             // Mark the fields

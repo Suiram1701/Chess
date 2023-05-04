@@ -9,9 +9,9 @@ using System.Windows;
 [assembly: AssemblyTitle("Chess.App")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Marius Kaufman")]
+[assembly: AssemblyCompany("Suiram1701")]
 [assembly: AssemblyProduct("Chess")]
-[assembly: AssemblyCopyright("Copyright © Marius Kaufman 2023")]
+[assembly: AssemblyCopyright("Copyright © Suiram1701 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -52,4 +52,3 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0")]
 [assembly: AssemblyFileVersion("1.0.0")]
-[assembly: NeutralResourcesLanguage("de-DE")]
