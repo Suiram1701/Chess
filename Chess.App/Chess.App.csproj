@@ -87,6 +87,9 @@
     </ApplicationDefinition>
     <Compile Include="Convert\PointStringConvert.cs" />
     <Compile Include="Movement.cs" />
+    <Compile Include="SelectFigureDialog.xaml.cs">
+      <DependentUpon>SelectFigureDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\MoveListView.xaml.cs">
       <DependentUpon>MoveListView.xaml</DependentUpon>
     </Compile>
@@ -109,6 +112,10 @@
       <DependentUpon>MainMenu.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SelectFigureDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControl\MoveListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

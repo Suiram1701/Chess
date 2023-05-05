@@ -1,6 +1,7 @@
 ﻿using Chess.App.UserControl;
 using Chess.Figures;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -8,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using Color = Chess.Figures.Color;
 
 namespace Chess.App
@@ -48,7 +50,7 @@ namespace Chess.App
                 Panel.SetZIndex((UIElement)DragFigure, 5);
                 ((UIElement)DragFigure).CaptureMouse();
 
-                MarkAllowedFields();
+                CalcMoves();
                 GC.Collect();
                 e.Handled = true;
             }
@@ -137,6 +139,55 @@ namespace Chess.App
                     if (farmerToKill != null)
                         Canvas.Children.Remove((UIElement)farmerToKill);
                 }
+                else if (DragFigure.GetType() == typeof(Farmer))     // Check for farmer transform
+                {
+                    // Check position
+                    if (DropPosition.Y == (DragFigure.Color == Color.White ? 0 : 7))
+                    {
+                    Show:
+                        SelectFigureDialog sfd = new SelectFigureDialog();
+                        if (sfd.ShowDialog() == true)
+                        {
+                            // Set new figure and set farmers position
+                            IFigure figure = null;
+                            switch (sfd.SelectedType.Name)
+                            {
+                                case "Queen":
+                                    figure = new Queen();
+                                    break;
+                                case "Jumper":
+                                    figure = new Jumper();
+                                    break;
+                                case "Bishop":
+                                    figure = new Bishop();
+                                    break;
+                                case "Tower":
+                                    figure = new Tower();
+                                    break;
+                                default:
+                                    goto Show;
+                            }
+                            figure.OnStart = false;
+                            figure.Start = DragFigure.Start;
+                            figure.Color = DragFigure.Color;
+                            figure.Position = DropPosition;
+
+                            // Replace figure
+                            int index = Canvas.Children.IndexOf((UIElement)DragFigure);
+                            Canvas.Children.RemoveAt(index);
+                            Canvas.Children.Add((UIElement)figure);
+                            ((UIElement)figure).MouseLeftButtonDown += Figure_LeftMouseButtonDown;
+                            ((UIElement)figure).MouseMove += Figure_MouseMove;
+                            ((UIElement)figure).MouseLeftButtonUp += Figure_LeftMouseButtonUp;
+
+                            // Apply position
+                            Canvas.SetLeft((UIElement)figure, figure.Position.X * 100);
+                            Canvas.SetTop((UIElement)figure, figure.Position.Y * 100);
+                        }
+                        else
+                            goto Show;
+                    }
+                }
                 #endregion
 
                 // Add to move list
@@ -174,7 +225,7 @@ namespace Chess.App
         /// <summary>
         /// Set allowed fields and mark them
         /// </summary>
-        private void MarkAllowedFields()
+        private void CalcMoves()
         {
             AllowedFields = DragFigure.GetMovement(Canvas.Children.Cast<UIElement>()
                     .Where(Element => Element as IFigure != null)     // Only the figures
