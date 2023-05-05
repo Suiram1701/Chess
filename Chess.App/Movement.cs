@@ -237,6 +237,19 @@ namespace Chess.App
             }
         }
 
+        /// <summary>
+        /// Calculate all fields from enemys
+        /// </summary>
+        /// <param name="enemy">Enemy team</param>
+        /// <returns>Enemy fields</returns>
+        private IEnumerable<Point> GetEnemyFields(Color enemy)
+        {
+            IEnumerable<IFigure> enemys = Canvas.Children.OfType<IFigure>().Where(figure => figure.Color == enemy).ToArray();
+            foreach (IFigure figure in enemys)
+                foreach (Point p in figure.GetMovement(enemys.Select(f => (f.Position, true))))
+                    yield return p;
+        }
+
         #region Rochade moves
         private enum RochadeMove
         {

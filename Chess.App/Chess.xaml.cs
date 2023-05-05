@@ -31,6 +31,7 @@ namespace Chess.App
         private IFigure DragFigure { get; set; } = null;
         private IEnumerable<Point> AllowedFields { get; set; } = null;
         private (bool Possible, string FigureName) EnPassend = (false, null);
+        private IEnumerable<Point> _EnemyFields { get; set; } = null;
 
         /// <summary>
         /// Select the figure as current item
@@ -51,6 +52,9 @@ namespace Chess.App
                 ((UIElement)DragFigure).CaptureMouse();
 
                 CalcMoves();
+                if (_EnemyFields is null)     // If other player is calc new enemy fields
+                    _EnemyFields = GetEnemyFields(DragFigure.Color == Color.White ? Color.Black : Color.White);
+                MarkFields();
                 GC.Collect();
                 e.Handled = true;
             }
@@ -209,6 +213,9 @@ namespace Chess.App
 
                 DragFigure.OnStart = DropPosition == DragFigure.Position && DragFigure.OnStart;
                 DragFigure.Position = DropPosition;
+
+                // Calc new enemy fields
+                _EnemyFields = null;
             }
 
             // Set figure on field
@@ -224,7 +231,7 @@ namespace Chess.App
         }
 
         /// <summary>
-        /// Set allowed fields and mark them
+        /// Set allowed fields
         /// </summary>
         private void CalcMoves()
         {
@@ -256,9 +263,66 @@ namespace Chess.App
                     }
                 }
             }
+        }
 
-            // Mark the fields
-            foreach (Point Point in AllowedFields)
+        /// <summary>
+        /// Mark the fields
+        /// </summary>
+        private void MarkFields()
+        {
+            // All same elements
+            IEnumerable<Point> sameFields = (PossibleFields.IsChecked ?? false) && (EnemyFields.IsChecked ?? false) ? AllowedFields.Where(point => _EnemyFields.Contains(point)) : null;
+
+            // Mark allowed fields if enabled
+            if (PossibleFields.IsChecked == true)
+            {
+                foreach (Point Point in AllowedFields)
+                {
+                    // Skip same fields
+                    if (sameFields?.Any(x => x.Equals(Point)) ?? false)
+                        continue;
+
+                    // Create and set on canvas
+                    int Index = Canvas.Children.Add(new Rectangle()
+                    {
+                        Tag = "Mark",
+                        Height = 100,
+                        Width = 100,
+                        Fill = Brushes.Green,
+                        Opacity = 0.5
+                    });
+                    Canvas.SetLeft(Canvas.Children[Index], Point.X * 100);
+                    Canvas.SetTop(Canvas.Children[Index], Point.Y * 100);
+                    Panel.SetZIndex(Canvas.Children[Index], 1);
+                }
+            }
+
+            // Mark enemy fields is enabled
+            if (EnemyFields.IsChecked == true)
+            {
+                foreach (Point Point in _EnemyFields)
+                {
+                    // Skip same fields
+                    if (sameFields?.Any(x => x.Equals(Point)) ?? false)
+                        continue;
+
+                    // Create and set on canvas
+                    int Index = Canvas.Children.Add(new Rectangle()
+                    {
+                        Tag = "Mark",
+                        Height = 100,
+                        Width = 100,
+                        Fill = Brushes.Red,
+                        Opacity = 0.5
+                    });
+                    Canvas.SetLeft(Canvas.Children[Index], Point.X * 100);
+                    Canvas.SetTop(Canvas.Children[Index], Point.Y * 100);
+                    Panel.SetZIndex(Canvas.Children[Index], 1);
+                }
+            }
+
+            // Mark same fields
+            foreach (Point field in sameFields ?? new List<Point>())
             {
                 // Create and set on canvas
                 int Index = Canvas.Children.Add(new Rectangle()
@@ -266,17 +330,17 @@ namespace Chess.App
                     Tag = "Mark",
                     Height = 100,
                     Width = 100,
-                    Fill = Brushes.Green,
+                    Fill = Brushes.Yellow,
                     Opacity = 0.5
                 });
-                Canvas.SetLeft(Canvas.Children[Index], Point.X * 100);
-                Canvas.SetTop(Canvas.Children[Index], Point.Y * 100);
+                Canvas.SetLeft(Canvas.Children[Index], field.X * 100);
+                Canvas.SetTop(Canvas.Children[Index], field.Y * 100);
                 Panel.SetZIndex(Canvas.Children[Index], 1);
             }
         }
 
         /// <summary>
-        /// Remove all green field marks
+        /// Remove all field marks
         /// </summary>
         private void RemoveMarks()
         {
