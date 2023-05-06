@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,42 +118,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Chess.EnemyMovBtn" xml:space="preserve">
-    <value>Indicate possible enemy movements</value>
+    <value>Mögliche Bewegungen des Gegners anzeigen</value>
   </data>
   <data name="Chess.PossibleMovBtn" xml:space="preserve">
-    <value>Show possible moves with the piece</value>
+    <value>Mögliche Züge mit der Figur anzeigen</value>
   </data>
   <data name="Figure.Bishop" xml:space="preserve">
-    <value>Bishop</value>
+    <value>Läufer</value>
   </data>
   <data name="Figure.Farmer" xml:space="preserve">
-    <value>Pawn</value>
+    <value>Bauer</value>
   </data>
   <data name="Figure.Jumper" xml:space="preserve">
-    <value>Jumper</value>
+    <value>Springer</value>
   </data>
   <data name="Figure.King" xml:space="preserve">
-    <value>King</value>
+    <value>König</value>
   </data>
   <data name="Figure.Queen" xml:space="preserve">
-    <value>Queen</value>
+    <value>Königin</value>
   </data>
   <data name="Figure.Tower" xml:space="preserve">
-    <value>Tower</value>
+    <value>Turm</value>
   </data>
   <data name="MainMenu.Label" xml:space="preserve">
-    <value>Chess</value>
+    <value>Schach</value>
   </data>
   <data name="MainMenu.STBtn" xml:space="preserve">
-    <value>Begin</value>
+    <value>Start</value>
   </data>
   <data name="MainMenu.Title" xml:space="preserve">
-    <value>Main menu</value>
+    <value>Hauptmenü</value>
   </data>
   <data name="SelectFigureDialog.Label" xml:space="preserve">
-    <value>Choose a piece for the pawn promotion:</value>
+    <value>Wähle eine Figur für die Bauernumwandlung:</value>
   </data>
   <data name="SelectFigureDialog.Title" xml:space="preserve">
-    <value>Pawn promotion</value>
+    <value>Bauernumwandlung</value>
   </data>
 </root>

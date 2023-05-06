@@ -23,7 +23,7 @@ namespace Localization
                 // Test if culture is available
                 try
                 {
-                    _ResManager.GetString("Title", value);
+                    _ResManager.GetString("MainMenu.Title", value);
                 }
                 catch
                 {
