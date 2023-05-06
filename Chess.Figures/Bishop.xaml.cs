@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Localization;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Localization;
 
 namespace Chess.Figures
 {

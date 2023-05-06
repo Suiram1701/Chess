@@ -1,5 +1,4 @@
 ﻿using Chess.Figures;
-using Localization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -18,7 +17,7 @@ namespace Chess.App
             List<UIElement> Elements = new List<UIElement>();
             foreach (UIElement Element in Grid.Children)
             {
-                if (Element as IFigure != null)
+                if ((Element as IFigure) != null)
                     Elements.Add(Element);
             }
 
@@ -224,7 +223,7 @@ namespace Chess.App
             // Add drag & drop event and position for all
             foreach (UIElement element in Canvas.Children)
             {
-                if (element as IFigure != null)
+                if ((element as IFigure) != null)
                 {
                     // Add handlers
                     element.MouseLeftButtonDown += Figure_LeftMouseButtonDown;

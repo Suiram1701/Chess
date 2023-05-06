@@ -45,7 +45,7 @@ namespace Chess.App
         /// <param name="e"></param>
         private void Figure_LeftMouseButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender as IFigure != null)
+            if ((sender as IFigure) != null)
             {
 #if !DEBUG
                 if (((IFigure)sender).Color != CurrentPlayer)     // Player must selected
@@ -104,7 +104,7 @@ namespace Chess.App
             {
                 // if on a player kill him
                 UIElement PlayerToKill = Canvas.Children.Cast<UIElement>()
-                    .FirstOrDefault(Element => Element as IFigure != null && (Element as IFigure).Position == DropPosition);
+                    .FirstOrDefault(Element => (Element as IFigure) != null && (Element as IFigure).Position == DropPosition);
                 if (PlayerToKill != null)
                     Canvas.Children.Remove(PlayerToKill);
 
@@ -237,7 +237,7 @@ namespace Chess.App
         private void CalcMoves()
         {
             AllowedFields = DragFigure.GetMovement(Canvas.Children.Cast<UIElement>()
-                    .Where(Element => Element as IFigure != null)     // Only the figures
+                    .Where(Element => (Element as IFigure) != null)     // Only the figures
                     .Select(Element => (((IFigure)Element).Position, ((IFigure)Element).Color == DragFigure.Color))).ToList();     // Get relavent data
 
             // Get possiblerochade moves
