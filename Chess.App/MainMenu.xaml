@@ -7,12 +7,10 @@
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Height="320" Width="320" Background="White"
-        MinHeight="320" MinWidth="320"
-        MaxHeight="320" MaxWidth="320"
-        Title="Hauptmenü">
+        Title="{Binding L_Title, Mode=OneTime}" ResizeMode="NoResize">
     <Canvas>
-        <Label Content="Schach" Canvas.Left="90" Canvas.Top="20" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Height="55" Width="140"/>
+        <Label Content="{Binding L_Label, Mode=OneTime}" Canvas.Left="90" Canvas.Top="20" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Height="55" Width="140"/>
 
-        <Button Click="Local_Click" Content="Lokales 1 vs 1" Canvas.Left="60" Canvas.Top="130" Height="41" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20"/>
+        <Button Click="Local_Click" Content="{Binding L_STBtn, Mode=OneTime}" Canvas.Left="60" Canvas.Top="130" Height="41" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20"/>
     </Canvas>
 </Window>

@@ -3,12 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Figure="clr-namespace:Chess.Figures;assembly=Chess.Figures"
+        xmlns:Localization="clr-namespace:Localization;assembly=Localization"
         mc:Ignorable="d"
-        Title="Bauernumwandlung" Height="320" Width="480" ResizeMode="NoResize">
-    <Window.DataContext>
-        <Binding RelativeSource="{RelativeSource Self}"/>
-    </Window.DataContext>
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="{Binding L_Title, Mode=OneTime}" Height="320" Width="480" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -19,10 +17,10 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <Label Content="Wählen sie eine Figur für die Bauernumwandlung aus:" FontSize="16" Grid.Row="1"/>
-        <Button Click="Figure_Click" Tag="Queen" Content="Königin" FontSize="18" Grid.Row="2" Height="30" Width="200"/>
-        <Button Click="Figure_Click" Tag="Jumper" Content="Springer" FontSize="18" Grid.Row="3" Height="30" Width="200"/>
-        <Button Click="Figure_Click" Tag="Bishop" Content="Läufer" FontSize="18" Grid.Row="4" Height="30" Width="200"/>
-        <Button Click="Figure_Click" Tag="Tower" Content="Turm" FontSize="18" Grid.Row="5" Height="30" Width="200"/>
+        <Label Content="{Binding L_Label, Mode=OneTime}" FontSize="16" Grid.Row="1"/>
+        <Button Click="Figure_Click" Tag="Queen" Content="{Binding L_Queen, Mode=OneTime}" FontSize="18" Grid.Row="2" Height="30" Width="200"/>
+        <Button Click="Figure_Click" Tag="Jumper" Content="{Binding L_Jumper, Mode=OneTime}" FontSize="18" Grid.Row="3" Height="30" Width="200"/>
+        <Button Click="Figure_Click" Tag="Bishop" Content="{Binding L_Bishop, Mode=OneTime}" FontSize="18" Grid.Row="4" Height="30" Width="200"/>
+        <Button Click="Figure_Click" Tag="Tower" Content="{Binding L_Tower, Mode=OneTime}" FontSize="18" Grid.Row="5" Height="30" Width="200"/>
     </Grid>
 </Window>

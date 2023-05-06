@@ -1,7 +1,7 @@
 ﻿using Chess.App.UserControl;
 using Chess.Figures;
+using Localization;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -9,7 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Xml.Linq;
 using Color = Chess.Figures.Color;
 
 namespace Chess.App
@@ -19,6 +18,12 @@ namespace Chess.App
     /// </summary>
     public partial class ChessGame : Window
     {
+        #region Localization
+        public string L_Title => LangHelper.GetString("MainMenu.Title");
+        public string L_PossibleMovBtn => LangHelper.GetString("Chess.PossibleMovBtn");
+        public string L_EnemyMovBtn => LangHelper.GetString("Chess.EnemyMovBtn");
+        #endregion
+
         private Color CurrentPlayer { get; set; } = Color.White;
 
         public ChessGame()
@@ -52,8 +57,7 @@ namespace Chess.App
                 ((UIElement)DragFigure).CaptureMouse();
 
                 CalcMoves();
-                if (_EnemyFields is null)     // If other player is calc new enemy fields
-                    _EnemyFields = GetEnemyFields(DragFigure.Color == Color.White ? Color.Black : Color.White);
+                _EnemyFields = GetEnemyFields(DragFigure.Color == Color.White ? Color.Black : Color.White);
                 MarkFields();
                 GC.Collect();
                 e.Handled = true;
@@ -213,9 +217,6 @@ namespace Chess.App
 
                 DragFigure.OnStart = DropPosition == DragFigure.Position && DragFigure.OnStart;
                 DragFigure.Position = DropPosition;
-
-                // Calc new enemy fields
-                _EnemyFields = null;
             }
 
             // Set figure on field

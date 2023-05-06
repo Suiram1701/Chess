@@ -143,6 +143,10 @@
       <Project>{8cd5f268-faa6-40dd-a3c6-0a2198cde1df}</Project>
       <Name>Chess.Figures</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Localization\Localization.csproj">
+      <Project>{95c5466b-3473-44c0-9618-4e7ed0a86784}</Project>
+      <Name>Localization</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8.1">

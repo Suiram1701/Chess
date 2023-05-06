@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Localization;
 
 namespace Chess.Figures
 {
@@ -26,7 +27,7 @@ namespace Chess.Figures
             set => SetValue(PositionProperty, value);
         }
 
-        string IFigure.Name { get; } = "Läufer";
+        string IFigure.Name { get; } = LangHelper.GetString("Figure.Bishop");
 
         public Start Start { get; set; }
 

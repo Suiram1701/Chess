@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Localization;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,7 +27,7 @@ namespace Chess.Figures
             set => SetValue(PositionProperty, value);
         }
 
-        string IFigure.Name { get; } = "Dame";
+        string IFigure.Name { get; } = LangHelper.GetString("Figure.Queen");
 
         public Start Start { get; set; }
 

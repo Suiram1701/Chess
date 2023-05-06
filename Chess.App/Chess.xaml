@@ -12,8 +12,8 @@
         Height="920" Width="1280"
         Title="Schach" WindowStartupLocation="CenterScreen">
     <Canvas>
-        <CheckBox x:Name="PossibleFields" IsChecked="True" Content="Mögliche Felder anzeigen" Canvas.Left="898" Canvas.Top="8"/>
-        <CheckBox x:Name="EnemyFields" Content="Für gegner mögliche Felder anzeigen" Canvas.Left="898" Canvas.Top="28"/>
+        <CheckBox x:Name="PossibleFields" IsChecked="True" Content="{Binding L_PossibleMovBtn, Mode=OneTime}" Canvas.Left="898" Canvas.Top="8"/>
+        <CheckBox x:Name="EnemyFields" Content="{Binding L_EnemyMovBtn, Mode=OneTime}" Canvas.Left="898" Canvas.Top="28"/>
         <Label Content="     A            B            C           D            E            F            G            H" Canvas.Left="40" Canvas.Top="4" HorizontalAlignment="Center" Height="40" VerticalAlignment="Top" Width="800" FontSize="26"/>
         <Label Content="1" FontSize="26" Canvas.Left="16" Canvas.Top="71" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Label Content="2" FontSize="26" Canvas.Left="16" Canvas.Top="171" HorizontalAlignment="Center" VerticalAlignment="Top"/>
