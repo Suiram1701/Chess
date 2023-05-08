@@ -1,6 +1,9 @@
-﻿using Chess.App.UserControl;
+﻿using Chess.App.Files;
+using Chess.App.Models;
+using Chess.App.UserControl;
 using Chess.Figures;
 using Localization;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +33,29 @@ namespace Chess.App
         {
             InitializeComponent();
             SetFigures(Color.Black);
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog()
+            {
+                Title = "Save the game",
+                Filter = "Chess file (*.chess)|*.chess",
+                FileName = DateTime.Now.ToShortDateString() + ".chess",
+            };
+            if (dialog.ShowDialog() == true )
+            {
+                // Get paths
+                string path = dialog.FileName.Remove(dialog.FileName.LastIndexOf('\\'));
+                string file = dialog.FileName.Substring(dialog.FileName.LastIndexOf('\\') + 1);
+                string fileName = file.Remove(file.LastIndexOf('.'));
+
+                // Create file
+                ChessFile.Create(fileName, filePath: path,
+                    (nameof(ChessFile.CurrentColor), CurrentPlayer),
+                    (nameof(ChessFile.MoveHistory), MoveListViews.Items.Cast<MoveListView>().Select(view => (MoveModel)view).ToList()),
+                    (nameof(ChessFile.Figures), Canvas.Children.OfType<IFigure>().Select(figure => (FigureModel)(UIElement)figure).ToList()));
+            }
         }
 
         #region Drag & drop

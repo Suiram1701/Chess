@@ -68,11 +68,13 @@
   <PropertyGroup />
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +83,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Convert\PointStringConvert.cs" />
+    <Compile Include="Extensions\BrushExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Files\ChessFile.cs" />
+    <Compile Include="Files\FileAttribute.cs" />
+    <Compile Include="Files\FileBase.cs" />
+    <Compile Include="Models\FigureModel.cs" />
+    <Compile Include="Models\MoveModel.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="SelectFigureDialog.xaml.cs">
       <DependentUpon>SelectFigureDialog.xaml</DependentUpon>
