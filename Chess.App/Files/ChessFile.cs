@@ -1,5 +1,6 @@
 ﻿using Chess.App.Models;
 using Chess.Figures;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
@@ -31,13 +32,16 @@ namespace Chess.App.Files
             foreach (MoveModel move in MoveHistory)
                 builder.Append(move.EndField);
             foreach (FigureModel figure in Figures)
+            {
                 builder.Append(figure.Position);
+                builder.Append(figure.Type);
+            }
 
             // Make signature
             byte[] bytes;
             using (SHA256 sha256 = SHA256.Create())
                 bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(builder.ToString()));
-            Signature = Encoding.UTF8.GetString(bytes);
+            Signature = System.Convert.ToBase64String(bytes);
 
             base.Save();
         }
@@ -57,13 +61,16 @@ namespace Chess.App.Files
             foreach (MoveModel move in MoveHistory)
                 builder.Append(move.EndField);
             foreach (FigureModel figure in Figures)
+            {
                 builder.Append(figure.Position);
+                builder.Append(figure.Type);
+            }
 
             // Make signature and compare it
             byte[] bytes;
             using (SHA256 sha256 = SHA256.Create())
                 bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(builder.ToString()));
-            return Signature == Encoding.UTF8.GetString(bytes);
+            return Signature == System.Convert.ToBase64String(bytes);
         }
     }
 }

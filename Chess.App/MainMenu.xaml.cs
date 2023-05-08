@@ -1,4 +1,6 @@
-﻿using Localization;
+﻿using Chess.App.Files;
+using Localization;
+using Microsoft.Win32;
 using System.Windows;
 
 namespace Chess.App
@@ -21,6 +23,31 @@ namespace Chess.App
         {
             new ChessGame().Show();
             Close();
+        }
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog()
+            {
+                Title = "Load a gamesave",
+                Filter = "Chess file (*chess)|*chess",
+                CheckFileExists = true,
+            };
+            if (dialog.ShowDialog() == true )
+            {
+                ChessFile file = ChessFile.Load(dialog.FileName);
+                if (file == null)     // Null if not validated
+                    return;
+
+                if (!file.Veryfy())
+                {
+                    MessageBox.Show("The gamesave was manipulated!", "Manipulation", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                new ChessGame(file).Show();
+                Close();
+            }
         }
     }
 }

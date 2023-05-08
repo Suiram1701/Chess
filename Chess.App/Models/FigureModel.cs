@@ -43,7 +43,7 @@ namespace Chess.App.Models
 
             return new FigureModel()
             {
-                Type = figure.GetType().Name,
+                Type = figure.GetType().AssemblyQualifiedName,
                 Name = figure.Name,
                 Color = figure.Color,
                 Position = figure.Position,

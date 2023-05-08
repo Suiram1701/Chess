@@ -29,10 +29,42 @@ namespace Chess.App
 
         private Color CurrentPlayer { get; set; } = Color.White;
 
-        public ChessGame()
+        public ChessGame(ChessFile gameSave = null)
         {
             InitializeComponent();
-            SetFigures(Color.Black);
+
+            // If set load gamesave
+            if (gameSave != null)
+            {
+                CurrentPlayer = gameSave.CurrentColor;
+                
+                // Load history
+                foreach (MoveListView move in gameSave.MoveHistory.Select(model => (MoveListView)model))
+                    MoveListViews.Items.Add(move);
+                Scroll.ScrollToEnd();
+
+                // Load figures
+                foreach (UIElement element in gameSave.Figures.Select(figure => (UIElement)figure))
+                    Canvas.Children.Add(element);
+
+                // Add drag & drop event and position for all
+                foreach (UIElement element in Canvas.Children)
+                {
+                    if ((element as IFigure) != null)
+                    {
+                        // Add handlers
+                        element.MouseLeftButtonDown += Figure_LeftMouseButtonDown;
+                        element.MouseMove += Figure_MouseMove;
+                        element.MouseLeftButtonUp += Figure_LeftMouseButtonUp;
+
+                        // Position
+                        Canvas.SetLeft(element, ((IFigure)element).Position.X * 100);
+                        Canvas.SetTop(element, ((IFigure)element).Position.Y * 100);
+                    }
+                }
+            }
+            else
+                SetFigures(Color.Black);
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

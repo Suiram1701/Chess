@@ -38,7 +38,7 @@ namespace Chess.App.Models
         {
             return new MoveModel()
             {
-                FigureType = View.FigureType.Name,
+                FigureType = View.FigureType.AssemblyQualifiedName,
                 Team = View.Team.ConvertToString(),
                 FigureName = View.FigureName,
                 StartField = View.StartField,

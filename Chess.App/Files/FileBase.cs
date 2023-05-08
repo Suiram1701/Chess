@@ -215,7 +215,7 @@ namespace Chess.App.Files
                 if (content == null)
                     throw new SerializationException($"File \"{path}\" can't deserialized");
             }
-            catch
+            catch (Exception e)
             {
                 content = default;
             }
