@@ -25,6 +25,7 @@ namespace Chess.App
         public string L_Title => LangHelper.GetString("MainMenu.Title");
         public string L_PossibleMovBtn => LangHelper.GetString("Chess.PossibleMovBtn");
         public string L_EnemyMovBtn => LangHelper.GetString("Chess.EnemyMovBtn");
+        public string L_Save => LangHelper.GetString("Chess.Save");
         #endregion
 
         private Color CurrentPlayer { get; set; } = Color.White;
@@ -71,7 +72,7 @@ namespace Chess.App
         {
             SaveFileDialog dialog = new SaveFileDialog()
             {
-                Title = "Save the game",
+                Title = L_Save,
                 Filter = "Chess file (*.chess)|*.chess",
                 FileName = DateTime.Now.ToShortDateString() + ".chess",
             };

@@ -14,6 +14,7 @@ namespace Chess.App
         public string L_Title => LangHelper.GetString("MainMenu.Title");
         public string L_Label => LangHelper.GetString("MainMenu.Label");
         public string L_STBtn => LangHelper.GetString("MainMenu.STBtn");
+        public string L_Load => LangHelper.GetString("MainMenu.Load");
         #endregion
 
         public MainMenu() =>
@@ -29,8 +30,8 @@ namespace Chess.App
         {
             OpenFileDialog dialog = new OpenFileDialog()
             {
-                Title = "Load a gamesave",
-                Filter = "Chess file (*chess)|*chess",
+                Title = LangHelper.GetString("MainMenu.Load"),
+                Filter = "Chess file (*.chess)|*.chess",
                 CheckFileExists = true,
             };
             if (dialog.ShowDialog() == true )
@@ -41,7 +42,7 @@ namespace Chess.App
 
                 if (!file.Veryfy())
                 {
-                    MessageBox.Show("The gamesave was manipulated!", "Manipulation", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(LangHelper.GetString("MainMenu.Mani"), LangHelper.GetString("MainMenu.ManiTitle"), MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 

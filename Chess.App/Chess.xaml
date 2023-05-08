@@ -126,6 +126,6 @@
             <ListBox x:Name="MoveListViews" Width="300"/>
         </ScrollViewer>
 
-        <Button Click="Save_Click" Content="Save the game" FontSize="16" Canvas.Left="900" Canvas.Top="849" HorizontalAlignment="Center" VerticalAlignment="Top" Width="317" Height="25"/>
+        <Button Click="Save_Click" Content="{Binding L_Save}" FontSize="16" Canvas.Left="900" Canvas.Top="849" HorizontalAlignment="Center" VerticalAlignment="Top" Width="317" Height="25"/>
     </Canvas>
 </Window>

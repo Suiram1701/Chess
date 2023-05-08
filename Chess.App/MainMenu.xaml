@@ -12,6 +12,6 @@
         <Label Content="{Binding L_Label, Mode=OneTime}" Canvas.Left="90" Canvas.Top="20" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Height="55" Width="140"/>
 
         <Button Click="Local_Click" Content="{Binding L_STBtn, Mode=OneTime}" Canvas.Left="60" Canvas.Top="130" Height="41" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="15"/>
-        <Button Click="Load_Click" Content="Load a gamesave" FontSize="15" Canvas.Left="60" Canvas.Top="196" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="41"/>
+        <Button Click="Load_Click" Content="{Binding L_Load}" FontSize="15" Canvas.Left="60" Canvas.Top="196" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Height="41"/>
     </Canvas>
 </Window>
