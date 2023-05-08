@@ -38,7 +38,7 @@ namespace Chess.App
             if (gameSave != null)
             {
                 CurrentPlayer = gameSave.CurrentColor;
-                
+
                 // Load history
                 foreach (MoveListView move in gameSave.MoveHistory.Select(model => (MoveListView)model))
                     MoveListViews.Items.Add(move);
@@ -76,7 +76,7 @@ namespace Chess.App
                 Filter = "Chess file (*.chess)|*.chess",
                 FileName = DateTime.Now.ToShortDateString() + ".chess",
             };
-            if (dialog.ShowDialog() == true )
+            if (dialog.ShowDialog() == true)
             {
                 // Get paths
                 string path = dialog.FileName.Remove(dialog.FileName.LastIndexOf('\\'));

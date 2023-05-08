@@ -34,7 +34,7 @@ namespace Chess.App
                 Filter = "Chess file (*.chess)|*.chess",
                 CheckFileExists = true,
             };
-            if (dialog.ShowDialog() == true )
+            if (dialog.ShowDialog() == true)
             {
                 ChessFile file = ChessFile.Load(dialog.FileName);
                 if (file == null)     // Null if not validated

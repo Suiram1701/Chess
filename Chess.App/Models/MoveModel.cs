@@ -2,7 +2,6 @@
 using Chess.App.UserControl;
 using System;
 using System.Windows;
-using System.Windows.Media;
 using System.Xml.Serialization;
 
 namespace Chess.App.Models

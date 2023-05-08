@@ -1,6 +1,5 @@
 ﻿using Chess.App.Models;
 using Chess.Figures;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
@@ -14,7 +13,7 @@ namespace Chess.App.Files
     {
         [XmlElement]
         public Color CurrentColor { get; set; }
-        
+
         [XmlElement]
         public List<MoveModel> MoveHistory { get; set; }
 

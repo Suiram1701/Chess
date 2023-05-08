@@ -66,7 +66,7 @@ namespace Chess.App.Files
                         }
                         File.Delete(FilePath);
                     }
-                    
+
                     // Update values
                     _FileName = value;
                     FilePath = path;
@@ -215,11 +215,11 @@ namespace Chess.App.Files
                 if (content == null)
                     throw new SerializationException($"File \"{path}\" can't deserialized");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 content = default;
             }
-            
+
             return content;
         }
 
@@ -240,7 +240,7 @@ namespace Chess.App.Files
             XmlSerializer serializer = new XmlSerializer(GetType());
 
             // Create path if not exist
-            string path = FilePath.Remove((FilePath.Length - 1) - (FileName + _Attribute.Extension).Length);
+            string path = FilePath.Remove(FilePath.Length - 1 - (FileName + _Attribute.Extension).Length);
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
